@@ -1,0 +1,38 @@
+﻿@model TravelWorldSolutions.Models.Hotel
+@{
+    ViewBag.Title = "Index";
+}
+<style type="text/css">
+    .highlight {
+        background-color: rgba(224, 196, 153, 0.42);
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well">
+                @using (Html.BeginForm())
+                {
+                    <div class="form-group">
+                        <label for="hotelname"></label>
+                        <input type="text" id="hotelName" name="hotelName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cotactPersonName"></label>
+                        <input type="text" id="cotactPersonName" name="cotactPersonName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="contactNumber"></label>
+                        <input type="text" id="contactNumber" name="contactNumber" />
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-default"></button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+}
