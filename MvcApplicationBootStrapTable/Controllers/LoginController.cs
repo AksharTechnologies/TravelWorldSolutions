@@ -17,11 +17,16 @@ namespace TravelWorldSolutions.Controllers
         [HttpPost]
         public ActionResult Index(User user)
         {
-            if (user.LoginId.ToLower()== "mrinal" && user.Password == "mrinal")
+            if (user.Password==null && user.LoginId==null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            if (user.LoginId.ToLower() == "mrinal" && user.Password == "mrinal")
             {
                 Session["user"] = user;
                 return RedirectToAction("Index", "Default2");
-            }
+            } 
             else
             {
                 return RedirectToAction("Index", "Login");

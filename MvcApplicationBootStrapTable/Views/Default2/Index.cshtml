@@ -1,115 +1,250 @@
-﻿@model IEnumerable<TravelWorldSolutions.Models.Hotel>
+﻿
+@model IEnumerable<TravelWorldSolutions.Models.Hotel>
 @{
     ViewBag.Title = "Index";
+   
 }
-<style type="text/css">
+<style>
+    .hideColumn {
+       display:none
+    }
 </style>
 
-<div class="row">
-    <div class="container">
-        <div class="col-md-offset-10 col-md-2">
-            <button class="btn btn-success" name="addHotel" id="addHotel">Add Hotel <span class="glyphicon glyphicon-plus"></span></button>
+<div ng-controller="hotelController">
+    <div class="row">
+        <div class="container">
+            <div class="col-md-offset-10 col-md-2">
+                <button class="btn btn-success btn-sm" name="addHotel" id="addHotel">Add Hotel <span class="glyphicon glyphicon-plus"></span></button>
+            </div>
         </div>
     </div>
-</div>
-
-<div style="font-family:Calibri; font-size:12px ; overflow-y:hidden">
-    <div class="container " style=" font-size:12px ; font-family:calibri">
-        <div>
-            <h4>Hotel Details</h4>
-            <div class="well table-responsive" style="background-color: rgba(0, 0, 0, 0.05)">
-                @if (Model != null)
-                {
-                    <table id="hotelDetails" class="table table-bordered table-hover table-condensed col-sm-12 col-xs-12">
-                        <thead style="background-color: rgba(47, 105, 4, 0.1)">
-                            <tr>
-                                <th>Hotel Name</th>
-                                <th>Contact Person Name</th>
-                                <th>Contact Number</th>
-                                <th>Rating</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (TravelWorldSolutions.Models.Hotel htl in Model)
-                            {
+    <div style="font-family:Calibri; font-size:12px ; overflow-y:hidden">
+        <div class="container " style=" font-size:12px ; font-family:calibri">
+            <div>
+                <div ><div style=" font-weight:700 ; font-size:18px">{{pageName}}</div></div>
+                <div class="well table-responsive" style="background-color: rgba(0, 0, 0, 0.05)">
+                    @if (Model != null)
+                    {
+                        <table id="hotelDetails" class="table table-bordered table-hover table-condensed table-responsive">
+                            <thead style="background-color: rgba(47, 105, 4, 0.1)">
                                 <tr>
-                                    <td>@htl.Name</td>
-                                    <td>@htl.ContactPersonName</td>
-                                    <td>@htl.ContactNumber</td>
-                                    <td>@htl.Rating</td>
-                                    <td><button class="btn btn-default btn-xs glyphicon glyphicon-edit center-block btn-warning" onclick="showModal('@htl.Name','@htl.ContactPersonName','@htl.ContactNumber','@htl.Rating')"> <span style=" font-family:Calibri; width:50px">Edit</span></button></td>
-                                    <td>@Html.ActionLink(" Delete", "DeleteHotel", "Default2", new { id=1}, new { @class = "btn btn-danger btn-sm" })</td>
+                                    <td>Name </td>
+                                    <td>ContactNumber  </td>
+                                    <td>ContactPersonName  </td>
+                                    <td>Rating </td>
+                                    <td>AddressLine1</td>
+                                    <td>AddressLine2 </td>
+                                    <td class="hideColumn">City </td>
+                                    <td class="hideColumn">State </td>
+                                    <td class="hideColumn">Pin </td>
+                                    <td class="hideColumn">EmailAddress1 </td>
+                                    <td class="hideColumn">EmailAddress2 </td>
+                                    <td class="hideColumn">HotelType </td>
+                                    <td class="hideColumn">PhoneNumber1 </td>
+                                    <td class="hideColumn">PhoneNumber2 </td>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
+                            </thead>
+                            <tbody>
+                                @foreach (TravelWorldSolutions.Models.Hotel htl in Model)
+                                {
+                                    <tr>
+                                        <td>@htl.Name </td>
+                                        <td>@htl.ContactNumber  </td>
+                                        <td>@htl.ContactPersonName  </td>
+                                        <td>@htl.Rating </td>
+                                        <td>@htl.AddressLine1</td>
+                                        <td>@htl.AddressLine2 </td>
+                                        <td class="hideColumn">@htl.City </td>
+                                        <td class="hideColumn">@htl.State </td>
+                                        <td class="hideColumn">@htl.Pin </td>
+                                        <td class="hideColumn">@htl.EmailAddress1 </td>
+                                        <td class="hideColumn">@htl.EmailAddress2 </td>
+                                        <td class="hideColumn">@htl.HotelType </td>
+                                        <td class="hideColumn">@htl.PhoneNumber1 </td>
+                                        <td class="hideColumn">@htl.PhoneNumber2 </td>
+                                        <td >
+                                        <button data-name="@htl.Name"
+                                        data-contactNumber="@htl.ContactNumber"
+                                        data-contactPersonName="@htl.ContactPersonName"
+                                        data-rating="@htl.Rating"
+                                        data-addressLine1="@htl.AddressLine1"
+                                        data-addressLine2="@htl.AddressLine2"
+                                        data-city="@htl.City"
+                                        data-state="@htl.State"
+                                        data-pin="@htl.Pin"
+                                        data-emailAddress1="@htl.EmailAddress1"
+                                        data-emailAddress2="@htl.EmailAddress2"
+                                        data-hotelType="@htl.HotelType"
+                                        data-phoneNumber1="@htl.PhoneNumber1"
+                                        data-phoneNumber2="@htl.PhoneNumber2"
+                                        data-HotelId="@htl.HotelId"
+                                        class="btn center-block btn-warning btn-xs" onclick="showModal(this)">
+                                                <span style=" font-family:Calibri; width:50px">Edit</span>
+                                            </button></td>
+                                        <td >@Html.ActionLink(" Delete", "DeleteHotel", "Default2", new { id = @htl.HotelId }, new { @class = "btn btn-danger btn-xs" })</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="modalEmployeeDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color:black ; color:white">
-                <h4 class="modal-title" id="gridSystemModalLabel">Hotel Details</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-offset-1 col-sm-10">
-                        @using (Html.BeginForm("AddOrEditDetails", "Default2"))
-                        {
-                            @Html.Hidden("addoreditflag");
-                            
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" id="name" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="contactPersonName">Contact Person Name</label>
-                                <input type="text" name="contactPersonName" id="contactPersonName" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="contactNumber">Contact Number</label>
-                                <input type="text" name="contactNumber" id="contactNumber" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="rating">Rating</label>
-                                <input type="text" name="rating" id="rating" class="form-control" />
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        }
+    <div id="modalEmployeeDetails" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:black ; color:white">
+                    <h4 class="modal-title" id="gridSystemModalLabel">Hotel Details</h4>
+                </div>
+                <div class="modal-body ">
+                    <div class="row">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            @using (Html.BeginForm("AddOrEditDetails", "Default2",FormMethod.Post))
+                            {
+                                @Html.Hidden("addoreditflag");
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" name="name" id="name" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="contactPersonName">Contact Person Name</label>
+                                            <input type="text" name="contactPersonName" id="contactPersonName" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="phoneNumber1">Phone Number 1</label>
+                                            <input type="text" name="phoneNumber1" id="phoneNumber1" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+                                     <div class="col-md-6">
+                                         <div class="form-group">
+                                             <label for="phoneNumber2">Phone Number 2</label>
+                                             <input type="text" name="phoneNumber2" id="phoneNumber2" class="form-control input-sm" required />
+                                         </div>
+                                     </div>
+                                </div>
+                                
+                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="emailAddress1">Email Address 1</label>
+                                            <input type="email" name="emailAddress1" id="emailAddress1" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+                                     <div class="col-md-6">
+                                         <div class="form-group">
+                                             <label for="emailAddress2">Email Address 2</label>
+                                             <input type="email" name="emailAddress2" id="emailAddress2" class="form-control input-sm" required />
+                                         </div>
+                                     </div>
+                                </div>
+                                
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="address1"> Address 1</label>
+                                            <input type="text" name="addressLine1" id="address1" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+                                     <div class="col-md-6">
+                                         <div class="form-group">
+                                             <label for="address2"> Address 2</label>
+                                             <input type="text" name="addressLine2" id="address2" class="form-control input-sm" required />
+                                         </div>
+                                     </div>
+                                </div>
+                                                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="state"> State </label>
+                                            @Html.DropDownList("State", new SelectList(ViewBag.stateDropDown, "Value", "Text", 0), new { @class = "form-control input-sm", @name = "State" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="city"> City</label>
+                                            @Html.DropDownList("City", new SelectList(ViewBag.cityDropDown, "Value", "Text", 0), new { @class = "form-control input-sm", @name = "City" })
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pin">Pin</label>
+                                            <input type="text" name="pin" id="pin" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="rating">Rating</label>
+                                            <input type="text" name="rating" id="rating" class="form-control input-sm" required />                                        </div>
+                                    </div>
+                                    <input type="hidden" name="HotelId" id="HotelId" />
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-danger btn-xs" data-dismiss="modal" onclick="closeModal()">Close</button>
+                                    <button type="submit" class="btn btn-primary btn-xs">Save changes</button>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
-
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
 @section scripts{
     <script type="text/javascript">
-        function showModal(name, contactPerson, contactNumbner, rating) {
-            $("#name").val(name)
-            $("#contactPersonName").val(contactPerson)
-            $("#contactNumber").val(contactNumbner)
-            $("#rating").val(rating)
+      
+        function showModal(htl) {
+            console.log(htl)
+            
+            $("#name").val($(htl).data("name"))
+            $("#contactPersonName").val($(htl).data("contactpersonname"))
+            $("#contactNumber").val($(htl).data("contactnumber"))
+            $("#rating").val($(htl).data("rating"))
+
+            $("#address1").val($(htl).data("addressline1"))
+            $("#address2").val($(htl).data("addressline2"))
+            $("#phoneNumber1").val($(htl).data("phonenumber1"))
+            $("#phoneNumber2").val($(htl).data("phonenumber2"))
+            $("#emailAddress1").val($(htl).data("emailaddress1"))
+            $("#emailAddress2").val($(htl).data("emailaddress2"))
+            $("#State").val($(htl).data("state")).change()
+            $("#City").val($(htl).data("city")).change()
+            $("#pin").val($(htl).data("pin"))
+            $("#HotelId").val($(htl).data("hotelid"))
+
             $('#modalEmployeeDetails').modal({
                 show: 'true'
+           
+                
             });
             $("#addoreditflag").val("edit")
         }
         $("#addHotel").click(function () {
-
             $('#modalEmployeeDetails').modal({
                 show: 'true'
             });
-
             $("#addoreditflag").val("add")
 
         })
@@ -117,6 +252,25 @@
             $("#hotelDetails").DataTable({
                 "order": [[1, "desc"]],
             });
+
+ 
         })
+
+        function closeModal () {
+            console.log("closed");
+            $("#name").val("")
+            $("#contactPersonName").val("")
+            $("#contactNumber").val("")
+            $("#rating").val("")
+            $("#address1").val("")
+            $("#address2").val("")
+            $("#phoneNumber1").val("")
+            $("#phoneNumber2").val("")
+            $("#emailAddress1").val("")
+            $("#emailAddress2").val("")
+            $("#State").val("")
+            $("#City").val("")
+            $("#pin").val("")
+            }
     </script>
 }

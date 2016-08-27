@@ -1,0 +1,283 @@
+﻿@model IEnumerable<TravelWorldSolutions.Models.Hotel>
+<br />
+<div class="row">
+    <div class="container">
+        <div class="well">
+            <div class="panel panel-danger">
+                <div class=" panel-heading">
+                    <div class="panel-title "><div style=" font-weight:700 ; font-size:18px">Quotation</div></div>
+                </div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("SaveProposal","Quotation"))
+                    {
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+
+                                    <label for="clientName">Client Name</label>
+
+                                    <div class="input-group">
+                                        <input id="clientName" name="proposal.ClientName" type="text" class="form-control input-sm" aria-describedby="inputGroupAddonClientName" required />
+                                        <span style="color:red" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonClientName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="numberOfPerson">Number Of Person</label>
+                                    <div class="input-group">
+                                        <input id="numberOfPerson" name="proposal.NumberOfPersons" type="number" min="0" max="50000" class="form-control input-sm" aria-describedby="inputGroupAddonNumberOfPerson" required />
+                                        <span style="color:red" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonNumberOfPerson"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="numberOfRooms">Number Of Rooms</label>
+                                    <div class="input-group">
+                                        <input id="numberOfRooms" name="proposal.NumberOfRooms" type="number" min="0" max="50000" class="form-control input-sm" aria-describedby="inputGroupAddonNumberOfRooms" required />
+                                        <span style="color:red" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonNumberOfRooms"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="fromDate">From Date</label>
+                                <div class="input-group">
+                                    <input type='text' class="form-control input-sm" id='fromDate' name="proposal.FromDate" aria-describedby="inputGroupAddonFromDate " required />
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#fromDate').datetimepicker({
+                                                viewMode: 'years',
+                                                format: 'DD/MM/YYYY'
+                                            });
+                                        });
+                                    </script>
+                                    <span style="color:blue" class="glyphicon glyphicon-calendar input-group-addon" id="inputGroupAddonFromDate" ></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="fromDate">To Date</label>
+
+                                <div class="input-group">
+                                    <input type='text' class="form-control input-sm" id='toDate' name="proposal.ToDate" aria-describedby="inputGroupAddonToDate" required />
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#toDate').datetimepicker(
+                                                {
+                                                    viewMode: 'years',
+                                                    format: 'DD/MM/YYYY'
+                                                });
+                                        });
+                                    </script>
+                                    <span style="color:blue" class="glyphicon glyphicon-calendar input-group-addon" id="inputGroupAddonToDate"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                          <br />
+                    <div class="row">
+                        <div class="container panel-title" style="font-weight:bold">Search For Hotels</div>
+                        <hr />
+                    </div>
+                   // @using (Html.BeginForm("FetchHotels", "Quotation"))
+                    //{
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="hotelName">Hotel Name</label>
+
+                                    <div class="input-group input-group-sm">
+                                        <span style="color:red" class="input-group-addon" id="groupAddonHotelName">Max 50 characters </span>
+                                        <input id="hotelName" name="hotelName" type="text" class="form-control input-sm " aria-describedby="groupAddonHotelName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="state"> State </label>
+                                    @Html.DropDownList("State", new SelectList(ViewBag.stateDropDown, "Value", "Text", 0), new { @class = "form-control", @name = "State" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="city"> City</label>
+                                    @Html.DropDownList("City", new SelectList(ViewBag.cityDropDown, "Value", "Text", 0), new { @class = "form-control", @name = "City" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="form-group">
+                                    @*<button class="btn btn-success">Search Hotel <span class="glyphicon glyphicon-search"></span></button>*@
+                                    <a class="btn btn-success btn-sm" style="color:black" href="#/fetchHotelsForQuotation">Search Hotel <span class="glyphicon glyphicon-search"></span></a>
+                                    <button type="submit" class="btn btn-success btn-sm" style="color:black" href="#/createQuotation">Create Quotation <span class="glyphicon glyphicon-plus"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                        //}
+
+                        if (Model != null)
+                        {
+                            <table id="hotelDetails" class="table table-bordered table-hover table-condensed table-responsive">
+                                <thead style="background-color: rgba(47, 105, 4, 0.1)">
+                                    <tr>
+                                        
+                                        <th>Select</th>
+                                        <th>Hotel Name</th>
+                                        <th>Contact Person Name</th>
+                                        <th>Contact Number</th>
+                                        <th>Rating</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                            int cnt = 0;
+                            foreach (TravelWorldSolutions.Models.Hotel htl in Model)
+                            {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="hotelIds" name="proposal.listOfHotelIds" value="@htl.HotelId" />
+                                </td>
+                                <td>@htl.Name</td>
+                                <td>@htl.ContactPersonName</td>
+                                <td>@htl.ContactNumber</td>
+                                <td>@htl.Rating</td>
+                                
+                            </tr>
+                                cnt++;
+                            }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalHotelDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:black ; color:white">
+                    <h4 class="modal-title" id="gridSystemModalLabel">Hotel Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            @using (Html.BeginForm("AddOrEditDetails", "Default2"))
+                            {
+                                @Html.Hidden("addoreditflag");
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" name="name" id="name" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="contactPersonName">Contact Person Name</label>
+                                            <input type="text" name="contactPersonName" id="contactPersonName" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="phoneNumber1">Phone Number 1</label>
+                                            <input type="text" name="phoneNumber1" id="phoneNumber1" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="phoneNumber2">Phone Number 2</label>
+                                            <input type="text" name="phoneNumber2" id="phoneNumber2" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="emailAddress1">Email Address 1</label>
+                                            <input type="text" name="emailAddress1" id="emailAddress1" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="emailAddress2">Email Address 2</label>
+                                            <input type="text" name="emailAddress2" id="emailAddress2" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="address1"> Address 1</label>
+                                            <input type="text" name="addressLine1" id="address1" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="address2"> Address 2</label>
+                                            <input type="text" name="addressLine2" id="address2" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="state"> State </label>
+                                            @Html.DropDownList("State", new SelectList(ViewBag.stateDropDown, "Value", "Text", 0), new { @class = "form-control", @name = "State", @id = "State" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="city"> City</label>
+                                            @Html.DropDownList("City", new SelectList(ViewBag.cityDropDown, "Value", "Text", 0), new { @class = "form-control", @name = "City", @id = "City" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pin">Pin</label>
+                                            <input type="text" name="pin" id="pin" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="rating">Rating</label>
+                                            <input type="text" name="rating" id="rating" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">Close</button>
+                                    @*<button type="submit" class="btn btn-primary">Save changes</button>*@
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+
+

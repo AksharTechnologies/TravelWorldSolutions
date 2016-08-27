@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MvcApplicationBootStrapTable.Models.Proposal>
+
+<div >
+    <div style=" font-weight:700 ; font-size:18px">Quotations</div>
+</div>    
+<div class="well table-responsive" style="background-color: rgba(0, 0, 0, 0.05)">
+    @if (Model != null)
+    {
+        <table id="tblQuotation" class="table table-bordered table-hover table-condensed table-striped table-responsive">
+            <thead style="background-color: rgba(47, 105, 4, 0.1)">
+                <tr>
+                    <th>Client Name</th>
+                    <th>Number Of Persons</th>
+                    <th>Number Of Rooms</th>
+                    <th>To Date</th>
+                    <th>From Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Proposal in Model)
+                {
+                    <tr>
+                        <td>@Proposal.ClientName</td>
+                        <td>@Proposal.NumberOfPersons</td>
+                        <td>@Proposal.NumberOfRooms</td>
+                        <td>@(String.Format("{0:dd/MM/yyyy}",Proposal.ToDate))</td>
+                        <td>@(String.Format("{0:dd/MM/yyyy}",Proposal.FromDate))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+    }
+</div>
+
+
+

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<TravelWorldSolutions.Models.Hotel>
+<br />
+<div class="row">
+    <div class="container">
+        <div class="well">
+            <div class="panel panel-danger">
+                @if (Model != null)
+                {
+                    <table id="hotelDetails" class="table table-bordered table-hover table-condensed table-responsive">
+                        <thead style="background-color: rgba(47, 105, 4, 0.1)">
+                            <tr>
+                                <th>Hotel Name</th>
+                                <th>Contact Person Name</th>
+                                <th>Contact Number</th>
+                                <th>Rating</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (TravelWorldSolutions.Models.Hotel htl in Model)
+                            {
+                                <tr>
+                                    <td>@htl.Name</td>
+                                    <td>@htl.ContactPersonName</td>
+                                    <td>@htl.ContactNumber</td>
+                                    <td>@htl.Rating</td>
+                                    <td><button class="btn btn-default btn-xs glyphicon glyphicon-edit center-block btn-warning" onclick="showModal('@htl.Name','@htl.ContactPersonName','@htl.ContactNumber','@htl.Rating')"> <span style=" font-family:Calibri; width:50px">Show Details</span></button></td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@section scripts{
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        function showModal(name, contactPerson, contactNumbner, rating) {
+            $("#name").val(name)
+            $("#contactPersonName").val(contactPerson)
+            $("#contactNumber").val(contactNumbner)
+            $("#rating").val(rating)
+            $('#modalEmployeeDetails').modal({
+                show: 'true'
+            });
+        }
+        $(document).ready(function () {
+            $("#hotelDetails").DataTable({
+                "order": [[1, "desc"]],
+            });
+        })
+    </script>
+}*@

@@ -15,7 +15,7 @@ namespace TravelWorldSolutions.Filters
 
         void IActionFilter.OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.HttpContext.Session["user"] == null && (filterContext.RouteData.Values["controller"].ToString() != "Login" && filterContext.RouteData.Values["action"].ToString() != "Indexs"))
+            if (filterContext.HttpContext.Session["user"] == null && (filterContext.RouteData.Values["controller"].ToString() != "Login" && filterContext.RouteData.Values["action"].ToString() != "Index"))
             {
                 filterContext.HttpContext.Response.RedirectToRoute("Login");
             }

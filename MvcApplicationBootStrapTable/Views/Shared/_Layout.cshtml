@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,34 +8,35 @@
     <meta name="viewport" content="width=device-width" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-
-
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
 </head>
 <body>
     <div class="row">
-        <div class="col-md-12" >
-          
-            <nav class="navbar navbar-default" style="background-color: #FFEFD5">
+        
+        <div class="col-md-12">
+
+            <nav class="navbar navbar-default" style="background-color: rgb(34, 90, 138); border: 1px solid rgb(34, 90, 138); border-radius: 0px; ">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>  
                         </button>
-                        <a class="navbar-brand" href="#">Travel World Solutions</a>
+                        <a class="navbar-brand" href="#" style="font-family: 'Lobster', cursive; color: rgba(220, 228, 241, 0.89); background-color:black">Travel World Solutions</a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav" style="">
                             <li class="active"><a href="#">Home</a></li>
                             <li><a href="#">About</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li>@Html.ActionLink("Quotations", "Index", "Quotation")</li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hotel Master<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li>@Html.ActionLink("Hotel Details","Index","Default2")</li>
+                                    <li>@Html.ActionLink("Hotel Details", "Index", "Default2")</li>
                                     <li><a href="#">Something else here</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li class="dropdown-header">Nav header</li>
@@ -47,7 +49,7 @@
                             <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
                             <li><a href="../navbar-static-top/">Static top</a></li>
                             <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-                            <li> @Html.ActionLink("Logout","Index","Logout")</li>
+                            <li  > @Html.ActionLink("Logout", "Index", "Logout")</li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
@@ -56,14 +58,34 @@
     </div>
     <div class="row" style="font-family:Calibri; font-size:12px ;">
         <div class="col-md-12">
-            @RenderBody()
+            <div ng-app="TravelWorldSolutionsApp">
+                @RenderBody()
+                <br />
+            </div>
         </div>
     </div>
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+    <div style="position: fixed; bottom: 0px; height: 36px; width: 100%; text-align: center; background-color: #670308; line-height: 36px; color: white; ">
+        <div class=" center-block">
+            <div class="row" style=" font-family: 'Lobster', cursive; color:white; ">
+                L & P Technologies.
+            </div>
+        </div>
+    </div>
+
+
+
     @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.min.js"></script>
+    <script src="~/Scripts/AngularModules/mainappmodule.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     @RenderSection("scripts", required: false)
 </body>
 </html>
