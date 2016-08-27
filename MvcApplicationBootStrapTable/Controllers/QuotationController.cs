@@ -112,8 +112,7 @@ namespace MvcApplicationBootStrapTable.Controllers
                              EmailAddress2 = row["EmailAddress2"].ToString(),
                              HotelType = Convert.ToInt32(row["HotelType"]),
                              PhoneNumber1 = row["PhoneNumber1"].ToString(),
-                             PhoneNumber2 = row["PhoneNumber2"].ToString()
-
+                             PhoneNumber2 = row["PhoneNumber2"].ToString(
                          }
                      );
             }
