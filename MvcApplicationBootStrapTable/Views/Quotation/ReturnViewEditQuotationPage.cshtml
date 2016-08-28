@@ -1,8 +1,63 @@
 ﻿@model IEnumerable<MvcApplicationBootStrapTable.Models.Proposal>
 
-<div >
+
+<!-- bootstrap style styling in jquery -->
+<style>
+    .ui-autocomplete {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        float: left;
+        display: none;
+        min-width: 160px;
+        padding: 4px 0;
+        margin: 0 0 10px 25px;
+        list-style: none;
+        background-color: #ffffff;
+        border-color: #ccc;
+        border-color: rgba(0, 0, 0, 0.2);
+        border-style: solid;
+        border-width: 1px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -webkit-background-clip: padding-box;
+        -moz-background-clip: padding;
+        background-clip: padding-box;
+        *border-right-width: 2px;
+        *border-bottom-width: 2px;
+    }
+
+    .ui-menu-item > a.ui-corner-all {
+        display: block;
+        padding: 3px 15px;
+        clear: both;
+        font-weight: normal;
+        font-size: 11px;
+        line-height: 18px;
+        color: #555555;
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+    .ui-state-hover, .ui-state-active {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: #0088cc;
+        border-radius: 0px;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        background-image: none;
+    }
+</style>
+
+<div>
     <div style=" font-weight:700 ; font-size:18px">Quotations</div>
-</div>    
+</div>
 <div class="well table-responsive" style="background-color: rgba(0, 0, 0, 0.05)">
     @if (Model != null)
     {
@@ -14,6 +69,8 @@
                     <th>Number Of Rooms</th>
                     <th>To Date</th>
                     <th>From Date</th>
+                    <th>Edit</th>
+                    <th>Mail</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,8 +80,18 @@
                         <td>@Proposal.ClientName</td>
                         <td>@Proposal.NumberOfPersons</td>
                         <td>@Proposal.NumberOfRooms</td>
-                        <td>@(String.Format("{0:dd/MM/yyyy}",Proposal.ToDate))</td>
-                        <td>@(String.Format("{0:dd/MM/yyyy}",Proposal.FromDate))</td>
+                        <td>@(String.Format("{0:dd/MM/yyyy}", Proposal.ToDate))</td>
+                        <td>@(String.Format("{0:dd/MM/yyyy}", Proposal.FromDate))</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">
+                                Edit Proposal
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#emailModal">
+                                Email
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -34,6 +101,126 @@
     {
     }
 </div>
+
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @*<div class="modal-header" style="height:10px">
+                </div>*@
+            <div class="modal-body">
+
+                <div class="row">
+                    <form method="post" enctype="multipart/form-data" action="@Url.Action("SaveAttachments")" id="attachmentUpload">
+                        <label for="formGroupAttachment" style="margin-left:13px">Attachment's</label>
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <input type="file" class="form-control input-sm" name="ListOfFiles" id="formGroupAttachment" placeholder="Email-Id" multiple>
+                                <span style="font-size:9px"><label id="message"></label></span>
+                            </div>
+                            <div class="col-md-5" >
+                                <button type="button" class="btn btn-primary btn-sm" id="formGroupAttachmentBtn">Upload</button>
+                            </div>
+                            <div class="col-md-0" >
+                           
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br />
+                <form>
+                    <div class="form-group">
+                        <label for="formGroupEmailID">To Email</label>
+                        <input type="text" class="form-control" id="formGroupEmailID" placeholder="Email-Id">
+                    </div>
+                    <div class="form-group">
+                        <label for="formGroupEmailID">CC</label>
+                        <div style="border: 1px solid #e0d5d5">
+                            <div class="row">
+
+                                <div class="col-md-5">
+                                    <input style="border:0px ; outline:none" type="text" id="formGroupEmailID1" placeholder="Email-Id-1">
+                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID2" placeholder="Email-Id-2">
+                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID3" placeholder="Email-Id-3">
+                                </div>>
+                                <div class="col-md-5">
+                                    <input style="border:0px ; outline:none" type="text" id="formGroupEmailID4" placeholder="Email-Id-4">
+                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID5" placeholder="Email-Id-5">
+                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID6" placeholder="Email-Id-6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="formGroupBody">Body</label>
+                        <textarea class="form-control" id="formGroupBody" placeholder="Body" style="height:120px ;  resize:none"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm btn-success">Email</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("[id^=formGroupEmailID]").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Quotation/FetchEmailIds",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            console.log(item);
+                            return { label: item, value: item };
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+    $('#formGroupAttachmentBtn').on('click', function () {
+        //$('#attachmentUpload').submit();
+        var file = document.getElementById('formGroupAttachment'),
+        formData = new FormData();
+        if (file.files.length > 0) {
+            for (var i = 0; i < file.files.length; i++) {
+                formData.append('file-' + i, file.files[i]);
+            }
+        }
+        $.ajax({
+            url: "@Url.Action("SaveAttachments")",
+            type: 'POST',
+            data: formData,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data, textStatus, jqXHR) {
+                $("#message").css({ "color": "green" })
+                $("#message").text(data)
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+
+            }
+        });
+    });
+</script>
+
+
+
 
 
 

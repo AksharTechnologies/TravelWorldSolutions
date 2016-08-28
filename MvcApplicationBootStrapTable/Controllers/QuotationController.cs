@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using TravelWorldSolutions.Models;
 using BusinessLayer;
+using System.IO;
 namespace MvcApplicationBootStrapTable.Controllers
 {
     public class QuotationController : Controller
@@ -17,7 +18,7 @@ namespace MvcApplicationBootStrapTable.Controllers
         {
             return View();
         }
-  
+
         public PartialViewResult ReturnQuotationPage()
         {
             List<City> lstCity = new List<City>();
@@ -43,8 +44,8 @@ namespace MvcApplicationBootStrapTable.Controllers
             return PartialView();
         }
         public PartialViewResult ReturnViewEditQuotationPage()
-         {
-             List<Proposal> lstQuotation = new List<Proposal>();
+        {
+            List<Proposal> lstQuotation = new List<Proposal>();
             DataSet dsProposals = ProposalBL.GetAllProposals();
             if (dsProposals.Tables[0] != null)
             {
@@ -52,11 +53,11 @@ namespace MvcApplicationBootStrapTable.Controllers
                 {
                     lstQuotation.Add
                         (
-                            new Proposal 
+                            new Proposal
                             {
                                 ClientName = row["ClientName"].ToString(),
-                                FromDate = Convert.ToDateTime( row["FromDate"].ToString()),
-                                NumberOfPersons = Convert.ToInt32( row["NumberOfPersons"] ),
+                                FromDate = Convert.ToDateTime(row["FromDate"].ToString()),
+                                NumberOfPersons = Convert.ToInt32(row["NumberOfPersons"]),
                                 NumberOfRooms = Convert.ToInt32(row["NumberOfRooms"]),
                                 ProposalId = Convert.ToInt32(row["ProposalId"]),
                                 ToDate = Convert.ToDateTime(row["ToDate"].ToString()),
@@ -66,7 +67,7 @@ namespace MvcApplicationBootStrapTable.Controllers
             }
             return PartialView(lstQuotation);
         }
-        public ActionResult  FetchHotels(string hotelName, int? stateId, int? cityId)
+        public ActionResult FetchHotels(string hotelName, int? stateId, int? cityId)
         {
             List<City> lstCity = new List<City>();
             lstCity.Add(new City { CityId = 0, CityName = "---Select City---" });
@@ -120,7 +121,6 @@ namespace MvcApplicationBootStrapTable.Controllers
             return PartialView("ReturnQuotationPage", lstHotel);
             //return Index();
         }
-
         public void SaveProposal(Proposal proposal)
         {
             ModelsClassLibrary.Proposal prpsl = new ModelsClassLibrary.Proposal();
@@ -128,10 +128,51 @@ namespace MvcApplicationBootStrapTable.Controllers
             prpsl.FromDate = proposal.FromDate;
             prpsl.listOfHotelIds = proposal.listOfHotelIds;
             prpsl.NumberOfPersons = proposal.NumberOfPersons;
-            prpsl.NumberOfRooms = proposal.NumberOfRooms ;
+            prpsl.NumberOfRooms = proposal.NumberOfRooms;
             prpsl.ToDate = proposal.ToDate;
             BusinessLayer.ProposalBL.Save(prpsl);
             Response.Redirect("/Quotation#/fetchHotelsForQuotation");
+        }
+        public JsonResult FetchEmailIds(string term)
+        {
+            List<string> lstOfEmailIds = new List<string>();
+            lstOfEmailIds.Add("poojan1@hotmail.com");
+            lstOfEmailIds.Add("poojan2@hotmail.com");
+            lstOfEmailIds.Add("poojan3@hotmail.com");
+            lstOfEmailIds.Add("poojan4@hotmail.com");
+            lstOfEmailIds.Add("poojan5@hotmail.com");
+            lstOfEmailIds.Add("poojan6@hotmail.com");
+            lstOfEmailIds.Add("poojan7@hotmail.com");
+            return Json(lstOfEmailIds, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult SaveAttachments(IEnumerable<HttpPostedFile> formData)
+        {
+        
+            try
+            {
+                if (Request.Files.Count >0)
+                {
+                    foreach (string file in Request.Files)
+                    {
+                        var _file = Request.Files[file];
+                        var fileName = Path.GetFileName(_file.FileName);
+                        var pathToSaveAttachment = Path.Combine(Server.MapPath("~/Attachments"), fileName);
+                        _file.SaveAs(pathToSaveAttachment);
+                    }
+                    return Json("File/File's uploaded successfully", JsonRequestBehavior.AllowGet);
+                   // return RedirectToAction("ReturnViewEditQuotationPage");
+                }
+                else
+                {
+                   return Json("Select a file", JsonRequestBehavior.AllowGet);
+                   // return RedirectToAction("ReturnViewEditQuotationPage");
+                }
+            }
+            catch (Exception)
+            {
+                return Json("Error while uploading file", JsonRequestBehavior.AllowGet);
+               // return RedirectToAction("ReturnViewEditQuotationPage");
+            }
         }
     }
 }
