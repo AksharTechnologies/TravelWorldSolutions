@@ -3,9 +3,9 @@
 <div class="row">
     <div class="container">
         <div class="well">
-            <div class="panel panel-danger">
+            <div class="panel">
                 <div class=" panel-heading">
-                    <div class="panel-title "><div style=" font-weight:700 ; font-size:18px">Quotation</div></div>
+                    <div class="panel-title "><div style=" font-weight: 700; font-size: 18px; color:black">Quotation</div></div>
                 </div>
                 <div class="panel-body">
                     @using (Html.BeginForm("SaveProposal","Quotation"))
@@ -18,7 +18,7 @@
 
                                     <div class="input-group">
                                         <input id="clientName" name="proposal.ClientName" type="text" class="form-control input-sm" aria-describedby="inputGroupAddonClientName" required />
-                                        <span style="color:red" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonClientName"></span>
+                                        <span style="color: #b10b0b" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonClientName"></span>
                                     </div>
                                 </div>
                             </div>
@@ -27,7 +27,7 @@
                                     <label for="numberOfPerson">Number Of Person</label>
                                     <div class="input-group">
                                         <input id="numberOfPerson" name="proposal.NumberOfPersons" type="number" min="0" max="50000" class="form-control input-sm" aria-describedby="inputGroupAddonNumberOfPerson" required />
-                                        <span style="color:red" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonNumberOfPerson"></span>
+                                        <span style="color: #b10b0b" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonNumberOfPerson"></span>
                                     </div>
 
                                 </div>
@@ -37,7 +37,7 @@
                                     <label for="numberOfRooms">Number Of Rooms</label>
                                     <div class="input-group">
                                         <input id="numberOfRooms" name="proposal.NumberOfRooms" type="number" min="0" max="50000" class="form-control input-sm" aria-describedby="inputGroupAddonNumberOfRooms" required />
-                                        <span style="color:red" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonNumberOfRooms"></span>
+                                        <span style="color: #b10b0b" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonNumberOfRooms"></span>
                                     </div>
                                 </div>
                             </div>
@@ -75,11 +75,18 @@
                                     <span style="color:blue" class="glyphicon glyphicon-calendar input-group-addon" id="inputGroupAddonToDate"></span>
                                 </div>
                             </div>
+
+
+                            <div class="col-md-4">
+                                <label for="fromDate">Select Rooms As Per Categories</label>
+                                <div  class="input-group"><a data-placement="bottom"  tabindex="0" class="btn btn-sm btn-danger popover-dismiss" role="button" data-toggle="popover"  title="Dismissible popover" >Rooms As Per Categories</a></div>
+                            </div>
+
                         </div>
                         
                           <br />
-                    <div class="row" style="background-color:bisque">
-                        <div class="container panel-title" style="font-weight:bold">Search For Hotels</div>
+                    <div class="row" style="background-color:#e5e5e5">
+                        <div class="container panel-title" style="font-weight: bold; color: black">Search For Hotels</div>
                         
                     </div>
                         <br />
@@ -88,7 +95,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="hotelName">Hotel Name</label>
+                                    <label for="hotelName" >Hotel Name</label>
 
                                     <div class="input-group input-group-sm">
                                         <span style="color:red" class="input-group-addon" id="groupAddonHotelName">Max 50 characters </span>
@@ -113,8 +120,8 @@
                             <div class="container">
                                 <div class="form-group">
                                     @*<button class="btn btn-success">Search Hotel <span class="glyphicon glyphicon-search"></span></button>*@
-                                    <a class="btn btn-success btn-sm" style="color:black" href="#/fetchHotelsForQuotation">Search Hotel <span class="glyphicon glyphicon-search"></span></a>
-                                    <button type="submit" class="btn btn-success btn-sm" style="color:black" href="#/createQuotation">Create Quotation <span class="glyphicon glyphicon-plus"></span></button>
+                                    <a class="btn btn-success btn-sm" style="color:white" href="#/fetchHotelsForQuotation">Search Hotel <span class="glyphicon glyphicon-search"></span></a>
+                                    <button type="submit" class="btn btn-success btn-sm" style="color:white" href="#/createQuotation">Create Quotation <span class="glyphicon glyphicon-plus"></span></button>
                                 </div>
                             </div>
                         </div>
@@ -280,5 +287,54 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
+<br />
+<br /><br /><br /><br />
+<div id="popover_content_wrapper" style="display: none ; width:200px">
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input type="checkbox" aria-label="Checkbox for following text input">
+                    </span>
+                    <span class="input-group-addon">Deluxe</span>
+                    <input type="number" class="form-control" aria-label="Text input with checkbox">
+                </div>
+            </div>
+            </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input type="checkbox" aria-label="Checkbox for following text input">
+                    </span>
+                    <span class="input-group-addon">Average</span>
+                    <input type="number" class="form-control" aria-label="Text input with checkbox">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input type="checkbox" aria-label="Checkbox for following text input">
+                    </span>
+                    <span class="input-group-addon">Below-Average</span>
+                    <input type="number" class="form-control" aria-label="Text input with checkbox">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.popover-dismiss').popover({
+       
+        html: true,
+        content: function () {
+            return $('#popover_content_wrapper').html();
+        },
+        container:'body'
+    })
+</script>
 
 
