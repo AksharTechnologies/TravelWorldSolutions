@@ -83,7 +83,9 @@
                         <td>@(String.Format("{0:dd/MM/yyyy}", Proposal.ToDate))</td>
                         <td>@(String.Format("{0:dd/MM/yyyy}", Proposal.FromDate))</td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal">
+                            <button data-proposalid="@Proposal.ProposalId" data-numberofpersons="@Proposal.NumberOfRooms"
+                                    data-clientname="@Proposal.ClientName" data-numberofrooms="@Proposal.NumberOfRooms" data-fromdate="@Proposal.FromDate"
+                                    data-todate="@Proposal.ToDate" type="button" class="btn btn-warning btn-xs" data-toggle="modal" onclick="showModal(this)">
                                 Edit Proposal
                             </button>
                         </td>
@@ -117,14 +119,14 @@
                         <label for="formGroupAttachment" style="margin-left:13px">Attachment's</label>
                         <div class="form-group">
                             <div class="col-md-5">
-                                <input type="file" class="form-control input-sm" name="ListOfFiles" id="formGroupAttachment" placeholder="Email-Id" multiple>
-                                <span style="font-size:9px"><label id="message"></label></span>
+                                <input type="file" class="form-control input-sm" name="ListOfFiles" id="formGroupAttachment" placeholder="Email-Id" ng-model="file" multiple>
+                                <span style="font-size:9px"><label id="message" ng-model="responseMessage"></label></span>
                             </div>
-                            <div class="col-md-5" >
-                                <button type="button" class="btn btn-primary btn-sm" id="formGroupAttachmentBtn">Upload</button>
+                            <div class="col-md-5">
+                                <button type="button" class="btn btn-primary btn-sm" id="formGroupAttachmentBtn">Attach-Files</button>
                             </div>
-                            <div class="col-md-0" >
-                           
+                            <div class="col-md-0">
+
                             </div>
                         </div>
                     </form>
@@ -133,42 +135,147 @@
                 <form>
                     <div class="form-group">
                         <label for="formGroupEmailID">To Email</label>
-                        <input type="text" class="form-control" id="formGroupEmailID" placeholder="Email-Id">
+                        <input type="text" class="form-control" id="formGroupEmailID" placeholder="Email-Id" ng-model="toEmailid" required oninvalid="this.setCustomValidity('Put here custom message')">
                     </div>
                     <div class="form-group">
                         <label for="formGroupEmailID">CC</label>
                         <div style="border: 1px solid #e0d5d5 ; border-radius:4px">
                             <div class="row">
-
                                 <div class="col-md-5">
-                                    <input style="border:0px ; outline:none" type="text" id="formGroupEmailID1" placeholder="Email-Id-1">
-                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID2" placeholder="Email-Id-2">
-                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID3" placeholder="Email-Id-3">
+                                    <input style="border:0px ; outline:none" type="text" id="formGroupEmailID1" placeholder="Email-Id-1" ng-model="emailid1">
+                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID2" placeholder="Email-Id-2" ng-model="emailid2">
+                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID3" placeholder="Email-Id-3" ng-model="emailid3">
                                 </div>>
                                 <div class="col-md-5">
-                                    <input style="border:0px ; outline:none" type="text" id="formGroupEmailID4" placeholder="Email-Id-4">
-                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID5" placeholder="Email-Id-5">
-                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID6" placeholder="Email-Id-6">
+                                    <input style="border:0px ; outline:none" type="text" id="formGroupEmailID4" placeholder="Email-Id-4" ng-model="emailid4">
+                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID5" placeholder="Email-Id-5" ng-model="emailid5">
+                                    <input style="border: 0px; outline: none" type="text" id="formGroupEmailID6" placeholder="Email-Id-6" ng-model="emailid6">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="formGroupBody">Body</label>
-                        <textarea class="form-control" id="formGroupBody" placeholder="Body" style="height:120px ;  resize:none"></textarea>
+                        <textarea class="form-control" id="formGroupBody" placeholder="Body" style="height:120px ;  resize:none" ng-model="emailBody" required></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm btn-danger" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-sm btn-success">Email</button>
+                <span id="progressMessage">
+                    <img src="~/Images/loader.gif" ng-style="hideShow" style="width:100px ; height:73px ; visibility:hidden" />
+                    <span ng-style="messageStyle">{{progressMessage}}</span>
+                </span>
+                <button type="button" class="btn btn-secondary btn-sm btn-danger" data-dismiss="modal" ng-click="clearEmailModal()">Close</button>
+                <button type="button" class="btn btn-primary btn-sm btn-success" ng-click="sendEmail()">Email</button>
             </div>
         </div>
     </div>
 </div>
 
 
+<!-- modal to edit proposal-->
+<div id="modalEditProposalDetails" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #91a062; color: white">
+                <h4 class="modal-title" id="gridSystemModalLabel">Proposal Details</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="row">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        @using (Html.BeginForm("EditProposal", "Quotation", FormMethod.Post))
+{
+    <input type="hidden" name="proposal.ProposalId" id="ProposalId" value="" />
+                                                    <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="clientName">Client Name</label>
+                                        <input type="text" name="proposal.ClientName" id="clientName" class="form-control input-sm" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="numberOfPersons">Number Of Persons</label>
+                                        <input type="number" name="proposal.NumberOfPersons" id="numberOfPersons" class="form-control input-sm" required min="1" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="numberOfRooms">Number Of Rooms</label>
+                                        <input type="number" name="proposal.NumberOfRooms" id="numberOfRooms" class="form-control input-sm" required min="1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="fromDate">From Date</label>
+
+                                    <div class="input-group">
+                                        <input type='text' class="form-control input-sm" id='fromDate' name="proposal.FromDate" aria-describedby="inputGroupAddonToDate" required />
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $('#fromDate').datetimepicker(
+                                                    {
+                                                        viewMode: 'years',
+                                                        format: 'DD/MM/YYYY'
+                                                    });
+                                            });
+                                        </script>
+                                        <span style="color:blue" class="glyphicon glyphicon-calendar input-group-addon" id="inputGroupAddonToDate"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="fromDate">To Date</label>
+
+                                    <div class="input-group">
+                                        <input type='text' class="form-control input-sm" id='toDate' name="proposal.ToDate" aria-describedby="inputGroupAddonToDate" required />
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $('#toDate').datetimepicker(
+                                                    {
+                                                        viewMode: 'years',
+                                                        format: 'DD/MM/YYYY'
+                                                    });
+                                            });
+                                        </script>
+                                        <span style="color:blue" class="glyphicon glyphicon-calendar input-group-addon" id="inputGroupAddonToDate"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="height:10px">
+                                <button type="button" class="btn btn-default btn-danger btn-xs" data-dismiss="modal" onclick="closeModal()">Close</button>
+                                <button type="submit" class="btn btn-primary btn-xs">Save changes</button>
+                            </div>
+}
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- modal to edit proposal ends here-->
+<br />
+<br />
+<br />
+<br />
 <script type="text/javascript">
+
+    function showModal(prpsl) {
+        console.log(prpsl)
+        $("#clientName").val($(prpsl).data("clientname"))
+        $("#toDate").val($(prpsl).data("todate"))
+        $("#fromDate").val($(prpsl).data("fromdate"))
+        $("#numberOfRooms").val($(prpsl).data("numberofrooms"))
+        $("#numberOfPersons").val($(prpsl).data("numberofpersons"))
+        $("#ProposalId").val($(prpsl).data("proposalid"))
+        $('#modalEditProposalDetails').modal({
+            show: 'true'
+        });
+    }   
     $(document).ready(function () {
         $("[id^=formGroupEmailID]").autocomplete({
             source: function (request, response) {
@@ -191,6 +298,9 @@
         });
     })
     $('#formGroupAttachmentBtn').on('click', function () {
+
+        $("#message").text(' ')
+
         //$('#attachmentUpload').submit();
         var file = document.getElementById('formGroupAttachment'),
         formData = new FormData();
@@ -212,11 +322,10 @@
                 $("#message").text(data)
             },
             error: function (jqXHR, textStatus, errorThrown) {
-
-
             }
         });
     });
+
 </script>
 
 

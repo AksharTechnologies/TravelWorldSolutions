@@ -753,6 +753,12 @@ tr.pager td {
         }
 }
 
+input[type="button" i] {
+border:1px solid gray;
+background-color:blue
+
+}
+
 
 
 

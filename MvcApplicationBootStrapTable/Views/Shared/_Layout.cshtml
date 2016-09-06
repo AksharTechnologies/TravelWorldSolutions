@@ -12,51 +12,52 @@
     <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
 </head>
-<body>
-    <div class="row">
-        
-        <div class="col-md-12">
+<body style="background-image: url(/Images/google_maps.jpg);" >
+    <div class="row" >
 
-            <nav class="navbar navbar-default" style="background-color: rgb(34, 90, 138); border: 1px solid rgb(34, 90, 138); border-radius: 0px; ">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>  
-                        </button>
-                        <a class="navbar-brand" href="#" style="font-family: 'Lobster', cursive; color: rgba(220, 228, 241, 0.89); background-color:black">Travel World Solutions</a>
-                    </div>
-                    <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav" style="">
-                            <li class="active"><a href="#">Home</a></li>
-                            <li><a href="#">About</a></li>
-                            <li>@Html.ActionLink("Quotations", "Index", "Quotation")</li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hotel Master<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li>@Html.ActionLink("Hotel Details", "Index", "Default2")</li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li class="dropdown-header">Nav header</li>
-                                    <li><a href="#">Separated link</a></li>
-                                    <li><a href="#">One more separated link</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-                            <li><a href="../navbar-static-top/">Static top</a></li>
-                            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-                            <li  > @Html.ActionLink("Logout", "Index", "Logout")</li>
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div><!--/.container-fluid -->
-            </nav>
-        </div>
+        <div class=" col-md-12">
+
+        <nav class="navbar navbar-default" style="background-color: rgb(34, 90, 138); border: 1px solid rgb(34, 90, 138); border-radius: 0px; ">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#" style="font-family: 'Lobster', cursive; color: rgba(220, 228, 241, 0.89); background-color: black; ">Travel World Solutions</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav" style="">
+                        <li class="active" style="display:@(Session["user"] != null?" ":"none")"><a href="#">Home</a></li>
+                        <li><a href="#">About-Us</a></li>
+                        <li style="display:@(Session["user"] != null?" ":"none")">@Html.ActionLink("Quotations", "Index", "Quotation")</li>
+                        <li class="dropdown">
+                            <a style="display:@(Session["user"] != null?" ":"none")" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Masters<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Hotel Master", "Index", "Default2")</li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active" style="display:none"><a href="./">Default <span class="sr-only">(current)</span></a></li>
+                        <li style="display:none"><a href="../navbar-static-top/">Static top</a></li>
+                        <li style="display:none"><a href="../navbar-fixed-top/">Fixed top</a></li>
+                        <li style="display:@(Session["user"] != null?" ":"none")"> @Html.ActionLink("Logout", "Index", "Logout")</li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
+        </nav>
+
     </div>
-    <div class="row" style="font-family:Calibri; font-size:12px ;">
+    </div>
+    <div class="row" style="font-family: Calibri; font-size: 12px;">
         <div class="col-md-12">
             <div ng-app="TravelWorldSolutionsApp">
                 @RenderBody()
@@ -65,26 +66,29 @@
         </div>
     </div>
 
-    <div id="footer" style="position: fixed; bottom: 0px; width: 100%; text-align: center; background-color: #dfdbdb; line-height: 36px; color: white;">
+    <div id="footer" style="position:relative; bottom: 0px; width: 100%; text-align: center; background-color: #dfdbdb; line-height: 36px; color: white; height:80px ; margin-top:0px">
         <div class=" center-block">
             <div class="row" style="padding-top:3px ; border-top:1px dotted" >
                
                 <div class=" col-sm-1 text-center col-md-offset-4">
-                    <img src="~/Images/facebook.jpg" style="width:30px ; height:30px " class="text-center"  />
+                    <img src="~/Images/facebook.jpg" style="width:25px ; height:25px " class="text-center"  />
                 </div>
                 <div class="col-sm-1 text-center">
-                    <img src="~/Images/writetous.jpg" style="height:30px ; width:30px" />
+                    <img src="~/Images/writetous.jpg" style="height:25px ; width:25px" />
                 </div>
               
                 <div class="col-sm-1 text-center">
-                    <img src="~/Images/linkedin.png" style="width:30px ; height:30px" />
+                    <img src="~/Images/linkedin.png" style="width:25px ; height:25px" />
                 </div>
                 <div class="col-sm-1 text-center" >
-                    <img src="~/Images/twitter.png" style="width:30px ; height:30px" />
+                    <img src="~/Images/twitter.png" style="width:25px ; height:25px" />
                 </div>
             </div>
-           <div><div class="col-md-offset-4 col-md-4"  style=" font-family: 'Lobster', cursive; color: #767272; ">Site design / logo © 2016  Glass Bottle Technologies</div></div>
-
+            <div>
+                <div class="col-md-offset-4 col-md-4" style=" font-family: 'Lobster', cursive; color: #767272; ">
+                    Site design / logo © 2016  Glass Bottle Technologies
+                </div>
+            </div>
         </div>
     </div>
 

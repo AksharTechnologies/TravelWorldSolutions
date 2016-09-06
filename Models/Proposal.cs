@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ModelsClassLibrary
 {
-    public class Proposal
+    public class ProposalModel
     {
 
         public int ProposalId { get; set; }

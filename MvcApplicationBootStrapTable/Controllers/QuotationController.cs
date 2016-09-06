@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using TravelWorldSolutions.Models;
 using BusinessLayer;
 using System.IO;
+using ModelsClassLibrary;
 namespace MvcApplicationBootStrapTable.Controllers
 {
     public class QuotationController : Controller
@@ -67,6 +68,7 @@ namespace MvcApplicationBootStrapTable.Controllers
             }
             return PartialView(lstQuotation);
         }
+        
         public ActionResult FetchHotels(string hotelName, int? stateId, int? cityId)
         {
             List<City> lstCity = new List<City>();
@@ -89,14 +91,14 @@ namespace MvcApplicationBootStrapTable.Controllers
             ViewBag.cityDropDown = lstCity.Select(x => new SelectListItem() { Text = x.CityName, Value = x.CityId.ToString() });
             ViewBag.stateDropDown = lstState.Select(x => new SelectListItem() { Text = x.StateName, Value = x.StateId.ToString() });
 
-            List<Hotel> lstHotel = new List<Hotel>();
+            List<TravelWorldSolutions.Models.Hotel> lstHotel = new List<TravelWorldSolutions.Models.Hotel>();
 
             DataSet dsLstOfHotels = HotelBL.GetAllHotels();
             foreach (DataRow row in dsLstOfHotels.Tables[0].Rows)
             {
                 lstHotel.Add
                     (
-                         new Hotel
+                         new TravelWorldSolutions.Models.Hotel
                          {
                              HotelId = Convert.ToInt32(row["Id"]),
                              Name = row["Name"].ToString(),
@@ -117,22 +119,44 @@ namespace MvcApplicationBootStrapTable.Controllers
                          }
                      );
             }
-            //return Json(new { Data = lstHotel }, JsonRequestBehavior.AllowGet); 
-            return PartialView("ReturnQuotationPage", lstHotel);
+            if( !string.IsNullOrEmpty(hotelName))
+            {
+                lstHotel = lstHotel.Where(x => x.Name.ToLower().Contains(hotelName.ToLower())).ToList();
+            }
+            if (stateId!=null && stateId!=0)
+            {
+                lstHotel = lstHotel.Where(x => x.State == stateId).ToList();
+            }
+            if (cityId != null && cityId!=0)
+            {
+                lstHotel = lstHotel.Where(x => x.City == cityId).ToList();
+            }
+            return Json(new { Data = lstHotel }, JsonRequestBehavior.AllowGet); 
+            //return PartialView("ReturnQuotationPage", lstHotel);
             //return Index();
         }
         public void SaveProposal(Proposal proposal)
         {
-            ModelsClassLibrary.Proposal prpsl = new ModelsClassLibrary.Proposal();
+            ModelsClassLibrary.ProposalModel prpsl = new ModelsClassLibrary.ProposalModel();
             prpsl.ClientName = proposal.ClientName;
             prpsl.FromDate = proposal.FromDate;
             prpsl.listOfHotelIds = proposal.listOfHotelIds;
             prpsl.NumberOfPersons = proposal.NumberOfPersons;
             prpsl.NumberOfRooms = proposal.NumberOfRooms;
             prpsl.ToDate = proposal.ToDate;
+            CreatePDF(prpsl);
             BusinessLayer.ProposalBL.Save(prpsl);
             Response.Redirect("/Quotation#/fetchHotelsForQuotation");
         }
+
+        public bool CreatePDF(ModelsClassLibrary.ProposalModel prpsl)
+        {
+            bool returnValue = false;
+            returnValue= BusinessLayer.CreatePDF.createAndSavePDF(prpsl);
+            return returnValue;
+        
+        }
+
         public JsonResult FetchEmailIds(string term)
         {
             List<string> lstOfEmailIds = new List<string>();
@@ -145,9 +169,22 @@ namespace MvcApplicationBootStrapTable.Controllers
             lstOfEmailIds.Add("poojan7@hotmail.com");
             return Json(lstOfEmailIds, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult sendEmail(string body, List<string> lstEmailIds, string to)
+        {
+            bool isMailSent = false;
+            isMailSent = new Mail().SendMail(body, string.Join(";", lstEmailIds), to,Session["filePaths"]==null?string.Empty: Session["filePaths"].ToString());
+            if (isMailSent)
+            {
+                return Json("Email sent successfully", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("Error while sending email" , JsonRequestBehavior.AllowGet) ;
+            }   
+        }
         public ActionResult SaveAttachments(IEnumerable<HttpPostedFile> formData)
         {
-        
+            string filePaths = string.Empty;
             try
             {
                 if (Request.Files.Count >0)
@@ -158,8 +195,11 @@ namespace MvcApplicationBootStrapTable.Controllers
                         var fileName = Path.GetFileName(_file.FileName);
                         var pathToSaveAttachment = Path.Combine(Server.MapPath("~/Attachments"), fileName);
                         _file.SaveAs(pathToSaveAttachment);
+                        //Session["filePath"] 
+                        filePaths =pathToSaveAttachment+","+filePaths;
                     }
-                    return Json("File/File's uploaded successfully", JsonRequestBehavior.AllowGet);
+                    Session["filePaths"] = filePaths;
+                    return Json("File/Files attached successfully", JsonRequestBehavior.AllowGet);
                    // return RedirectToAction("ReturnViewEditQuotationPage");
                 }
                 else
@@ -173,6 +213,19 @@ namespace MvcApplicationBootStrapTable.Controllers
                 return Json("Error while uploading file", JsonRequestBehavior.AllowGet);
                // return RedirectToAction("ReturnViewEditQuotationPage");
             }
+        }
+        public void EditProposal(Proposal proposal)
+        {
+            string returnValue = string.Empty;
+            ProposalModel prpsl = new ProposalModel();
+            prpsl.ClientName = proposal.ClientName;
+            prpsl.FromDate = proposal.FromDate;
+            prpsl.ToDate = proposal.ToDate;
+            prpsl.NumberOfPersons = proposal.NumberOfPersons;
+            prpsl.NumberOfRooms = proposal.NumberOfRooms;
+            prpsl.ProposalId = proposal.ProposalId ;
+            ProposalBL.Update(prpsl);
+            Response.Redirect("/Quotation#/editQuotation"); ;
         }
     }
 }

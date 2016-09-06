@@ -279,7 +279,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Images\facebook.jpg" />
     <Content Include="Images\footer.png" />
+    <Content Include="Images\google_maps.jpg" />
     <Content Include="Images\linkedin.png" />
+    <Content Include="Images\loader.gif" />
     <Content Include="Images\twitter.png" />
     <Content Include="Images\writetous.jpg" />
     <Content Include="Scripts\angular-animate.js" />

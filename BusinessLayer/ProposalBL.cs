@@ -12,7 +12,7 @@ namespace BusinessLayer
 {
     public class ProposalBL
     {
-        public static bool Save(Proposal prpsl)
+        public static bool Save(ProposalModel prpsl)
         {
             bool returnValue = false;
             try
@@ -36,6 +36,24 @@ namespace BusinessLayer
             DataSet ds = new DataSet();
             ds = DatabaseBroker.GetDataSet(sqlQuery);
             return ds;
+        }
+
+        public static bool Update(ProposalModel prpsl)
+        {
+            bool returnValue = false;
+            try
+            {
+                returnValue = PersistProposals.UpdateProposals(prpsl);
+            }
+            catch (Exception e)
+            {
+                returnValue = false;
+                throw e;
+            }
+            finally
+            {
+            }
+            return returnValue;
         }
     }
 }
