@@ -118,24 +118,40 @@
                     <form method="post" enctype="multipart/form-data" action="@Url.Action("SaveAttachments")" id="attachmentUpload">
                         <label for="formGroupAttachment" style="margin-left:13px">Attachment's</label>
                         <div class="form-group">
-                            <div class="col-md-5">
-                                <input type="file" class="form-control input-sm" name="ListOfFiles" id="formGroupAttachment" placeholder="Email-Id" ng-model="file" multiple>
+                            <div class="col-md-4">
+
+                                <label style="cursor:pointer ">
+                                    <div class="btn btn-xs btn-success"> Browse Files  <span id="badgeNumberOfFilesAttached" class="badge">0 files attached</span></div>
+                                    <input onchange="handleFiles(this.files)" style="visibility:hidden" type="file" class="form-control input-sm" name="ListOfFiles" id="formGroupAttachment" placeholder="Email-Id" ng-model="file" multiple>
+                                </label>
                                 <span style="font-size:9px"><label id="message" ng-model="responseMessage"></label></span>
+                                <br />
                             </div>
                             <div class="col-md-5">
-                                <button type="button" class="btn btn-primary btn-sm" id="formGroupAttachmentBtn">Attach-Files</button>
+                                <button type="button" class="btn btn-primary btn-xs" id="formGroupAttachmentBtn">Attach-Files</button>
+                                <span>
+                                        <a data-html="true" data-placement="bottom" id="showFiles" tabindex="0" class="btn btn-xs btn-default" role="button" data-toggle="popover" title="View Files">View Files</a>
+                                </span>
                             </div>
                             <div class="col-md-0">
 
                             </div>
                         </div>
                     </form>
+
                 </div>
                 <br />
+                <div class="row">
+                    <div class="progress" style="height:12px ; visibility:hidden ; ">
+                        <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0% ;" ng-class="hideProgressBar">
+                            <span class="sr-only">80% Complete (danger)</span>
+                        </div>
+                    </div>
+                </div>
                 <form>
                     <div class="form-group">
                         <label for="formGroupEmailID">To Email</label>
-                        <input type="text" class="form-control" id="formGroupEmailID" placeholder="Email-Id" ng-model="toEmailid" required oninvalid="this.setCustomValidity('Put here custom message')">
+                        <input onchange="handleFiles(this.files)" type="text" class="form-control" id="formGroupEmailID" placeholder="Email-Id" ng-model="toEmailid" required ">
                     </div>
                     <div class="form-group">
                         <label for="formGroupEmailID">CC</label>
@@ -156,17 +172,17 @@
                     </div>
                     <div class="form-group">
                         <label for="formGroupBody">Body</label>
-                        <textarea class="form-control" id="formGroupBody" placeholder="Body" style="height:120px ;  resize:none" ng-model="emailBody" required></textarea>
+                        <textarea class="form-control" id="formGroupBody" placeholder="Body" style="height:80px ;  resize:none" ng-model="emailBody" required></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <span id="progressMessage">
-                    <img src="~/Images/loader.gif" ng-style="hideShow" style="width:100px ; height:73px ; visibility:hidden" />
+                    <img src="~/Images/loader.gif" ng-style="hideShow" style="width:77px ; height:50px ; visibility:hidden" />
                     <span ng-style="messageStyle">{{progressMessage}}</span>
                 </span>
-                <button type="button" class="btn btn-secondary btn-sm btn-danger" data-dismiss="modal" ng-click="clearEmailModal()">Close</button>
-                <button type="button" class="btn btn-primary btn-sm btn-success" ng-click="sendEmail()">Email</button>
+                <button type="button" class="btn btn-secondary btn-xs btn-danger" data-dismiss="modal" ng-click="clearEmailModal()">Close</button>
+                <button type="button" class="btn btn-primary btn-xs btn-success" ng-click="sendEmail()">Email</button>
             </div>
         </div>
     </div>
@@ -184,9 +200,9 @@
                 <div class="row">
                     <div class="col-sm-offset-1 col-sm-10">
                         @using (Html.BeginForm("EditProposal", "Quotation", FormMethod.Post))
-{
-    <input type="hidden" name="proposal.ProposalId" id="ProposalId" value="" />
-                                                    <div class="row">
+                        {
+                            <input type="hidden" name="proposal.ProposalId" id="ProposalId" value="" />
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="clientName">Client Name</label>
@@ -250,7 +266,7 @@
                                 <button type="button" class="btn btn-default btn-danger btn-xs" data-dismiss="modal" onclick="closeModal()">Close</button>
                                 <button type="submit" class="btn btn-primary btn-xs">Save changes</button>
                             </div>
-}
+                        }
                     </div>
                 </div>
             </div>
@@ -258,12 +274,48 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- modal to edit proposal ends here-->
+<div id="popover_content_wrapper" class="popover_content_wrapper" style="display: none ; width:300px ">
+    <div style="overflow-x:scroll ; overflow-y:scroll">
+        <span id="showNamesOfFileAttached"></span>
+        <br />
+        <br />
+    </div>
+</div>
 <br />
 <br />
 <br />
 <br />
 <script type="text/javascript">
+    $(document).on('click keyup', function (e) {
+        console.log(e.target)
+        if (typeof $(e.target).data('placement') == 'undefined') {
+            $('#showFiles').popover('hide');
+        }
+    });
 
+    $("#showFiles").popover({
+        html: true,
+        trigger: 'manual',
+        content: function () {
+            return $('#popover_content_wrapper').html();
+            //return $compile($("#popover_content_wrapper").html())(scope);
+        },
+        container: 'body'
+    }).click(function (e) {
+        $('.popover-dismiss').not(this).popover('hide');
+        $(this).popover('toggle');
+    });
+
+    $("#formGroupAttachment").on("change", handleFiles, false);
+    function handleFiles() {
+        var fileList = $("#formGroupAttachment")[0];/* now you can work with the file list */
+        console.log("test" + $("#formGroupAttachment")[0].files[0].name);
+        for (var i = 0, numFiles = fileList.files.length; i < numFiles; i++) {
+            var fileName = fileList.files[i].name;
+            console.log(fileName);
+            $("#showNamesOfFileAttached").append("<span class='label label-warning' style='margin-top:4px '>" + fileName + "<span style='background-color: #f0ad4e;font-size:12px' class='badge' data-fileNamne='" + fileName + "'>| Delete</span> </span><br/>")
+        }
+    }
     function showModal(prpsl) {
         console.log(prpsl)
         $("#clientName").val($(prpsl).data("clientname"))
@@ -275,7 +327,7 @@
         $('#modalEditProposalDetails').modal({
             show: 'true'
         });
-    }   
+    }
     $(document).ready(function () {
         $("[id^=formGroupEmailID]").autocomplete({
             source: function (request, response) {
@@ -298,7 +350,6 @@
         });
     })
     $('#formGroupAttachmentBtn').on('click', function () {
-
         $("#message").text(' ')
 
         //$('#attachmentUpload').submit();
@@ -307,9 +358,51 @@
         if (file.files.length > 0) {
             for (var i = 0; i < file.files.length; i++) {
                 formData.append('file-' + i, file.files[i]);
+                console.log("filenames" + file.files)
             }
         }
         $.ajax({
+
+            xhr: function () {
+                $(".progress").css({ "visibility": "visible" })
+                var xhr = new window.XMLHttpRequest();
+                //Upload progress
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total) * 100;
+                        //Do something with upload progress
+                        $(".progress-bar").attr('aria-valuenow', percentComplete).css('width', percentComplete + "%");
+                        //console.log("per :"+percentComplete);
+                    }
+                }, false);
+
+                xhr.upload.addEventListener('loadend', function (e) {
+                    $(".progress-bar").attr('aria-valuenow', percentComplete).css('width', percentComplete + "%");
+                });
+
+                xhr.addEventListener('readystatechange', function (e) {
+                    if (this.readyState === 4) {
+
+                        setTimeout(function () {
+                            $(".progress").css({ "visibility": "hidden" });
+                            $(".progress-bar").attr('aria-valuenow', "0").css('width', "0%");
+                            $("#badgeNumberOfFilesAttached").html($("#formGroupAttachment")[0].files.length + " files attached")
+
+                        }, 3000);
+                        //  $(".progress").css('visibility', "hidden");
+                    }
+                });
+
+                //Download progress
+                xhr.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        //Do something with download progress
+                        console.log("per :" + percentComplete);
+                    }
+                }, false);
+                return xhr;
+            },
             url: "@Url.Action("SaveAttachments")",
             type: 'POST',
             data: formData,
@@ -320,12 +413,13 @@
             success: function (data, textStatus, jqXHR) {
                 $("#message").css({ "color": "green" })
                 $("#message").text(data)
+
+                console.log(formData);
             },
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
     });
-
 </script>
 
 

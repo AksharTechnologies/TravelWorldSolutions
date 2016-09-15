@@ -10,6 +10,10 @@
                 <div class="panel-body">
                     @using (Html.BeginForm("SaveProposal", "Quotation"))
                     {
+                        <input name="proposal.Persons_For_Deluxe_Rooms" id="proposal.Persons_For_Deluxe_Rooms" type="hidden" ng-model="numbreOfPersonsForDeluxeRoom" />
+                        <input name="proposal.Persons_For_Average_Rooms" id="proposal.Persons_For_Average_Rooms" type="hidden" ng-model="numbreOfPersonsForAverageRoom" />
+                        <input name="proposal.Persons_For_Below_Average_Rooms" id="proposal.Persons_For_Below_Average_Rooms" type="hidden" ng-model="numbreOfPersonsForBelowAverageRoom" />
+
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -26,7 +30,7 @@
                                 <div class="form-group">
                                     <label for="numberOfPerson">Number Of Person</label>
                                     <div class="input-group">
-                                        <input id="numberOfPerson" name="proposal.NumberOfPersons" type="number" min="1" max="50000" class="form-control input-sm" aria-describedby="inputGroupAddonNumberOfPerson"  required />
+                                        <input id="numberOfPerson" name="proposal.NumberOfPersons" type="number" min="1" max="50000" class="form-control input-sm" aria-describedby="inputGroupAddonNumberOfPerson" required />
                                         <span style="color: #b10b0b" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonNumberOfPerson"></span>
                                     </div>
 
@@ -36,7 +40,7 @@
                                 <div class="form-group">
                                     <label for="numberOfRooms">Number Of Rooms</label>
                                     <div class="input-group">
-                                        <input id="numberOfRooms" name="proposal.NumberOfRooms" type="number" min="1    " max="50000" class="form-control input-sm" aria-describedby="inputGroupAddonNumberOfRooms"  required />
+                                        <input id="numberOfRooms" name="proposal.NumberOfRooms" type="number" min="1    " max="50000" class="form-control input-sm" aria-describedby="inputGroupAddonNumberOfRooms" required />
                                         <span style="color: #b10b0b" class="input-group-addon glyphicon glyphicon-asterisk " id="inputGroupAddonNumberOfRooms"></span>
                                     </div>
                                 </div>
@@ -79,7 +83,7 @@
 
                             <div class="col-md-4">
                                 <label for="fromDate">Select Rooms As Per Categories</label>
-                                <div class="input-group"><a data-placement="bottom" tabindex="0" class="btn btn-sm btn-danger popover-dismiss" role="button" data-toggle="popover" title="Dismissible popover">Rooms As Per Categories</a></div>
+                                <div class="input-group"><a data-html="true" data-placement="bottom" tabindex="0" class="btn btn-sm btn-danger popover-dismiss" role="button" data-toggle="popover" title="Dismissible popover">Rooms As Per Categories</a></div>
                             </div>
 
                         </div>
@@ -127,49 +131,87 @@
                         </div>
                         //}
 
-                       // if (Model != null)
-                      ///  {
-                            <table id="hotelDetails" class="table table-bordered table-hover table-condensed table-responsive">
-                                <thead style="background-color: rgba(47, 105, 4, 0.1)">
-                                    <tr>
-
-                                        <th>Select</th>
-                                        <th>Hotel Name</th>
-                                        <th>Contact Person Name</th>
-                                        <th>Contact Number</th>
-                                        <th>Rating</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @*@{
-                            int cnt = 0;
-                            foreach (TravelWorldSolutions.Models.Hotel htl in Model)
-                            {
+                        // if (Model != null)
+                        ///  {
+                        <table id="hotelDetails" class="table table-bordered table-hover table-condensed table-responsive">
+                            <thead style="background-color: rgba(47, 105, 4, 0.1)">
                                 <tr>
-                                    <td>
-                                        <input type="checkbox" id="hotelIds" name="proposal.listOfHotelIds" value="@htl.HotelId" />
-                                    </td>
-                                    <td>@htl.Name</td>
-                                    <td>@htl.ContactPersonName</td>
-                                    <td>@htl.ContactNumber</td>
-                                    <td>@htl.Rating</td>
+
+                                    <th>Select</th>
+                                    <th>Hotel Name</th>
+                                    <th>Contact Person Name</th>
+                                    <th>Contact Number</th>
+                                    <th>Rating</th>
                                 </tr>
-                                cnt++;
-                            }
-                                    }*@
-                                    <tr ng-repeat="htl in lstHotels">
-                                        <td>
-                                            <input type="checkbox" id="hotelIds" name="proposal.listOfHotelIds" value="{{htl.HotelId}}" />
-                                        </td>
-                                        <td>{{htl.Name}}</td>
-                                        <td>{{htl.ContactPersonName}}</td>
-                                        <td>{{htl.ContactNumber}}</td>
-                                        <td>{{htl.Rating}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            </thead>
+                            <tbody>
+                                @*@{
+                                    int cnt = 0;
+                                    foreach (TravelWorldSolutions.Models.Hotel htl in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" id="hotelIds" name="proposal.listOfHotelIds" value="@htl.HotelId" />
+                                            </td>
+                                            <td>@htl.Name</td>
+                                            <td>@htl.ContactPersonName</td>
+                                            <td>@htl.ContactNumber</td>
+                                            <td>@htl.Rating</td>
+                                        </tr>
+                                        cnt++;
+                                    }
+                                            }*@
+                                <tr ng-repeat="htl in lstHotels">
+                                    <td>
+                                        <input type="checkbox" id="hotelIds" name="proposal.listOfHotelIds" value="{{htl.HotelId}}" />
+                                    </td>
+                                    <td>{{htl.Name}}</td>
+                                    <td>{{htl.ContactPersonName}}</td>
+                                    <td>{{htl.ContactNumber}}</td>
+                                    <td>{{htl.Rating}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         //}
                     }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popover_content_wrapper" class="popover_content_wrapper" style="display: none ; width:300px ">
+        <div>
+            <div class="row popover_content_wrapper">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            @*<input type="checkbox" aria-label="Checkbox for following text input" class="popover_content_wrapper">*@
+                        </span>
+                        <span class="input-group-addon">Deluxe</span>
+                        <input id="deluxe" ng-change="setHiddenFieldForNumberOfPersonsPertypeOfRoom()" ng-model="Deluxe" type="number" class="form-control popover_content_wrapper" aria-label="Text input with checkbox">
+                    </div>
+                </div>
+            </div>
+            <div class="row popover_content_wrapper">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            @*<input type="checkbox" aria-label="Checkbox for following text input" class="popover_content_wrapper">*@
+                        </span>
+                        <span class="input-group-addon">Average</span>
+                        <input id="average" ng-change="setHiddenFieldForNumberOfPersonsPertypeOfRoom()" ng-model="Average" type="number" class="form-control popover_content_wrapper" aria-label="Text input with checkbox">
+                    </div>
+                </div>
+            </div>
+            <div class="row popover_content_wrapper">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            @*<input type="checkbox" aria-label="Checkbox for following text input" class="popover_content_wrapper">*@
+                        </span>
+                        <span class="input-group-addon">Below-Average</span>
+                        <input id="belowaverage" ng-change="setHiddenFieldForNumberOfPersonsPertypeOfRoom()" ng-model="BelowAverage" type="number" class="form-control popover_content_wrapper" aria-label="Text input with checkbox">
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,54 +219,45 @@
 </div>
 <br />
 <br /><br /><br /><br />
-<div id="popover_content_wrapper" style="display: none ; width:200px">
-    <div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                    </span>
-                    <span class="input-group-addon">Deluxe</span>
-                    <input type="number" class="form-control" aria-label="Text input with checkbox">
-                </div>
-            </div>
-            </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                    </span>
-                    <span class="input-group-addon">Average</span>
-                    <input type="number" class="form-control" aria-label="Text input with checkbox">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                    </span>
-                    <span class="input-group-addon">Below-Average</span>
-                    <input type="number" class="form-control" aria-label="Text input with checkbox">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <br />
 <br />
 <script>
+    //$('.popover-dismiss').popover({
+    //    html: true,
+    //    content: function () {
+    //        return $('#popover_content_wrapper').html();
+    //    },
+    //    container:'body'
+    //})
     $('.popover-dismiss').popover({
-       
         html: true,
+        trigger: 'manual',
         content: function () {
             return $('#popover_content_wrapper').html();
-        },
-        container:'body'
-    })
+            //return $compile($("#popover_content_wrapper").html())(scope);
+        },      
+        container: 'body'
+    }).click(function (e) {
+        $('.popover-dismiss').not(this).popover('hide');
+        $(this).popover('toggle');
+        $('.popover-content').find('#deluxe').val($("input[id = 'proposal.Persons_For_Deluxe_Rooms']").val())
+        $('.popover-content').find('#average').val($("input[id = 'proposal.Persons_For_Average_Rooms']").val())
+        $('.popover-content').find('#belowaverage').val($("input[id = 'proposal.Persons_For_Below_Average_Rooms']").val())
+
+    });
+    $(document).on('click keyup', function (e) {
+        if (!$(e.target).is('.popover-dismiss, .popover-title, .popover_content_wrapper')) {
+            $('.popover-dismiss').popover('hide');
+        }
+        else {
+            $("input[id = 'proposal.Persons_For_Deluxe_Rooms']").val($('.popover-content').find('#deluxe').val())
+            $("input[id = 'proposal.Persons_For_Average_Rooms']").val($('.popover-content').find('#average').val())
+            $("input[id = 'proposal.Persons_For_Below_Average_Rooms']").val($('.popover-content').find('#belowaverage').val())
+        }
+    });
+
 </script>
+
 
 

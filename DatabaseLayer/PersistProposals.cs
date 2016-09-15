@@ -30,7 +30,9 @@ namespace DatabaseLayer
                                       NumberOfRooms ,
                                       FromDate ,
                                       ToDate ,
-                                      listOfHotelIds 
+                                      listOfHotelIds ,
+                                      PDFFilePath ,Persons_For_Deluxe_Rooms,Persons_For_Average_Rooms,Persons_For_Below_Average_Rooms
+            
                                 ) 
                                VALUES
                                (
@@ -39,7 +41,8 @@ namespace DatabaseLayer
                                       @NumberOfRooms ,
                                       @FromDate ,
                                       @ToDate ,
-                                      @listOfHotelIds 
+                                      @listOfHotelIds ,
+                                      @PDFFilePath,@Persons_For_Deluxe_Rooms,@Persons_For_Average_Rooms,@Persons_For_Below_Average_Rooms
                                )";
 
                 var csvHotelIds = string.Join(",", prpsl.listOfHotelIds);
@@ -53,6 +56,12 @@ namespace DatabaseLayer
                 command.Parameters.AddWithValue("@FromDate", prpsl.FromDate);
                 command.Parameters.AddWithValue("@ToDate", prpsl.ToDate);
                 command.Parameters.AddWithValue("@listOfHotelIds", csvHotelIds);
+                command.Parameters.AddWithValue("@PDFFilePath", prpsl.PdfPath);
+
+                command.Parameters.AddWithValue("@Persons_For_Average_Rooms", prpsl.Persons_For_Average_Rooms);
+                command.Parameters.AddWithValue("@Persons_For_Deluxe_Rooms", prpsl.Persons_For_Deluxe_Rooms);
+                command.Parameters.AddWithValue("@Persons_For_Below_Average_Rooms", prpsl.Persons_For_Below_Average_Rooms);
+
                 command.ExecuteNonQuery();
              
                 returnValue = true;

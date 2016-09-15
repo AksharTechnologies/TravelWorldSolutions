@@ -16,6 +16,10 @@ namespace ModelsClassLibrary
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public List<string> listOfHotelIds { get; set; }
+        public string PdfPath { get; set; }
+        public int Persons_For_Deluxe_Rooms { get; set; }
+        public int Persons_For_Average_Rooms { get; set; }
+        public int Persons_For_Below_Average_Rooms { get; set; }
         
     }
 }

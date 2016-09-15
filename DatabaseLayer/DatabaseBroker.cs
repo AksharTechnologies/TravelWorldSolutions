@@ -28,7 +28,6 @@ namespace DatabaseLayer
                 throw;
             }
         }
-
         public static bool Delete(string sqlQuery)
         {
             bool returnValue = false;

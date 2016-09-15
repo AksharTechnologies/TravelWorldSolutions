@@ -9,8 +9,18 @@ moduleForControllers.controller("loginController", function($scope) {
 
  
 
-}).controller("quotationController", function ($scope, $location, $http) {
+}).controller("quotationController", function ($scope, $location, $http, $compile) {
 
+    $scope.setHiddenFieldForNumberOfPersonsPertypeOfRoom = function () {
+        console.log($scope.Deluxe)
+        console.log($scope.Average)
+        console.log($scope.BelowAverage)
+        alert("ad")
+
+        $scope.numbreOfPersonsForDeluxeRoom = $scope.Deluxe;
+        $scope.numbreOfPersonsForAverageRoom = $scope.Average;
+        $scope.numbreOfPersonsForBelowAverageRoom = $scope.BelowAverage;
+    }
     $scope.hideShow = { 'visibility': 'hidden' };
 
     $scope.$on('$viewContentLoaded', function () {
@@ -41,7 +51,7 @@ moduleForControllers.controller("loginController", function($scope) {
     }
     $scope.sendEmail = function () {
 
-        $("#formGroupEmailID").checkValidity();
+        //$("#formGroupEmailID").checkValidity();
 
         $scope.hideShow = { 'visibility': 'visible' };
         $scope.progressMessage =" "
@@ -84,10 +94,11 @@ moduleForControllers.controller("loginController", function($scope) {
         $scope.emailBody = null;
         $scope.toEmailid = null;
         $scope.progressMessage = " ";
-
-
+        angular.element("#message").html(" ")
+        angular.element(".progress-bar").css({ 'width': '0' })
+        angular.element(".progress").css({'visibility':'hidden'})
     }
-})
+})  
 var moduleForRouting = angular.module("moduleForRouting", ['ngRoute'])
 angular.module("moduleForRouting").config(function ($routeProvider, $locationProvider) {
     $routeProvider.when('/createQuotation', {

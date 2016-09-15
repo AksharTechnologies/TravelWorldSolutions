@@ -144,19 +144,20 @@ namespace MvcApplicationBootStrapTable.Controllers
             prpsl.NumberOfPersons = proposal.NumberOfPersons;
             prpsl.NumberOfRooms = proposal.NumberOfRooms;
             prpsl.ToDate = proposal.ToDate;
-            CreatePDF(prpsl);
+            prpsl.Persons_For_Average_Rooms = proposal.Persons_For_Average_Rooms;
+            prpsl.Persons_For_Below_Average_Rooms = proposal.Persons_For_Below_Average_Rooms;
+            prpsl.Persons_For_Deluxe_Rooms = proposal.Persons_For_Deluxe_Rooms;
+
+            prpsl.PdfPath=CreatePDF(prpsl);
             BusinessLayer.ProposalBL.Save(prpsl);
             Response.Redirect("/Quotation#/fetchHotelsForQuotation");
         }
-
-        public bool CreatePDF(ModelsClassLibrary.ProposalModel prpsl)
+        public string CreatePDF(ModelsClassLibrary.ProposalModel prpsl)
         {
-            bool returnValue = false;
+            string returnValue = string.Empty;
             returnValue= BusinessLayer.CreatePDF.createAndSavePDF(prpsl);
             return returnValue;
-        
         }
-
         public JsonResult FetchEmailIds(string term)
         {
             List<string> lstOfEmailIds = new List<string>();
